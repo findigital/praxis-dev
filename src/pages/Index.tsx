@@ -27,34 +27,36 @@ const Index = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen h-full">
       {/* Left Sidebar */}
-      <div className="w-64 bg-primary text-white border-r border-accent p-4 flex flex-col">
-        <div className="mb-8">
-          <Button 
-            className="w-full bg-secondary text-primary hover:bg-secondary/90 font-semibold shadow-lg"
-            onClick={() => toast({ title: "Starting new research session..." })}
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            New Research
-          </Button>
-        </div>
-
-        <div className="space-y-6">
-          <div className="bg-accent/20 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-sm font-semibold">Pinned Research</h2>
-              <Pin className="h-4 w-4 text-secondary/80" />
-            </div>
-            <p className="text-sm text-gray-300">No pinned research yet</p>
+      <div className="w-64 bg-primary text-white border-r border-accent min-h-screen flex flex-col">
+        <div className="p-4 flex-1 flex flex-col">
+          <div className="mb-8">
+            <Button 
+              className="w-full bg-secondary text-primary hover:bg-secondary/90 font-semibold shadow-lg"
+              onClick={() => toast({ title: "Starting new research session..." })}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              New Research
+            </Button>
           </div>
 
-          <NavigationSection />
+          <div className="space-y-6 flex-1">
+            <div className="bg-accent/20 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-sm font-semibold">Pinned Research</h2>
+                <Pin className="h-4 w-4 text-secondary/80" />
+              </div>
+              <p className="text-sm text-gray-300">No pinned research yet</p>
+            </div>
+
+            <NavigationSection />
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-50">
+      <div className="flex-1 flex flex-col bg-gray-50 min-h-screen">
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto space-y-8">
             {/* AI Chat Interface */}
