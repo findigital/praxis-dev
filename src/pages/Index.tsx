@@ -44,8 +44,8 @@ const Index = () => {
 
   const navigationItems = [
     { icon: MessageSquare, label: "AI Research Chat", href: "#" },
-    { icon: Folder, label: "Case Groups", href: "#" },
-    { icon: BookOpen, label: "Law Reports", href: "#" },
+    { icon: Folder, label: "My Cases", href: "#" },
+    { icon: BookOpen, label: "Law Library", href: "#" },
     { icon: Mic, label: "Transcription", href: "#" },
     { icon: Users, label: "Team", href: "#" },
     { icon: Settings, label: "Settings", href: "#" },
