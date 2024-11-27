@@ -45,9 +45,9 @@ const Index = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-primary text-white">
+    <div className="flex h-screen">
       {/* Left Sidebar */}
-      <div className="w-64 border-r border-accent p-4 flex flex-col">
+      <div className="w-64 bg-primary text-white border-r border-accent p-4 flex flex-col">
         <div className="mb-8">
           <Button 
             className="w-full bg-secondary text-primary hover:bg-secondary/90 font-semibold"
@@ -89,7 +89,7 @@ const Index = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col bg-white">
         <main className="flex-1 p-6">
           <div className="max-w-3xl mx-auto">
             <form onSubmit={handleSearch} className="mb-8">
@@ -97,14 +97,14 @@ const Index = () => {
                 <Input
                   type="text"
                   placeholder="Type your legal research query..."
-                  className="w-full pl-4 pr-12 py-3 bg-accent/50 border-accent placeholder-gray-400 text-white rounded-xl"
+                  className="w-full pl-4 pr-12 py-3 bg-white border-primary/20 placeholder-gray-500 text-gray-900 rounded-xl focus:border-primary focus:ring-primary"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Button 
                   type="submit" 
                   size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-transparent hover:bg-accent/50"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary hover:bg-accent text-white"
                 >
                   <Search className="h-5 w-5" />
                 </Button>
@@ -113,11 +113,11 @@ const Index = () => {
 
             <div className="space-y-4">
               {/* Recent Activities Card */}
-              <Card className="p-6 bg-accent/30 border-accent">
-                <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
+              <Card className="p-6 border border-primary/10 shadow-sm">
+                <h3 className="text-lg font-semibold mb-4 text-primary">Recent Activities</h3>
                 <div className="space-y-3">
                   {["Research on Commercial Law", "Supreme Court Updates", "New Case Analysis"].map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 text-sm">
+                    <div key={index} className="flex items-center space-x-3 text-sm text-gray-600">
                       <div className="w-2 h-2 bg-secondary rounded-full" />
                       <span>{activity}</span>
                     </div>
@@ -126,14 +126,14 @@ const Index = () => {
               </Card>
 
               {/* Quick Actions Card */}
-              <Card className="p-6 bg-accent/30 border-accent">
-                <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+              <Card className="p-6 border border-primary/10 shadow-sm">
+                <h3 className="text-lg font-semibold mb-4 text-primary">Quick Actions</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {navigationItems.slice(0, 4).map((item) => (
                     <Button
                       key={item.label}
                       variant="outline"
-                      className="flex items-center justify-center space-x-2 h-20 border-accent hover:bg-accent/50"
+                      className="flex items-center justify-center space-x-2 h-20 border-primary/20 hover:bg-primary hover:text-white transition-colors"
                     >
                       <item.icon className="w-5 h-5" />
                       <span>{item.label}</span>
