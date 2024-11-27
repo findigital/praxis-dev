@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { Badge } from "@/components/ui/badge";
 import {
   MessageSquare,
   Folder,
@@ -15,6 +16,7 @@ import {
   History,
   Pin,
   ArrowRight,
+  MoreVertical,
 } from "lucide-react";
 
 const Index = () => {
@@ -25,6 +27,46 @@ const Index = () => {
     "What are the recent Supreme Court decisions on intellectual property?",
     "Explain the key elements of contract law in simple terms",
     "Find cases related to employment discrimination in tech companies",
+  ];
+
+  const recentlyLaunched = [
+    {
+      title: "Article Generator",
+      description: "New Workbook: Please provide the subject or topic you want the article to focus on...",
+      date: "Nov 27 2024",
+      tag: "Article Generator"
+    },
+    {
+      title: "FAQ Generator (All Datas)",
+      description: "GTA 6 FAQ: **Grumpy FAQ About GTA 6****Welcome to the Rockstar Games GTA 6",
+      date: "Nov 27 2024",
+      tag: "FAQ Generator",
+      badge: "Improve"
+    },
+  ];
+
+  const documents = [
+    {
+      icon: MessageSquare,
+      title: "Cold Email",
+      description: "Create an effective cold email to reach out to potential clients",
+      date: "Jul 15, 2024",
+      location: "in Workbook"
+    },
+    {
+      icon: Folder,
+      title: "Article Generator",
+      description: "Instantly create unique articles on any topic. Boost engagement",
+      date: "Jul 15, 2024",
+      location: "in Workbook"
+    },
+    {
+      icon: BookOpen,
+      title: "Startup Ideas (w/ quantities)",
+      description: "Generate innovative startup ideas along with estimated quantities",
+      date: "Jul 15, 2024",
+      location: "in Workbook"
+    },
   ];
 
   const handleSearch = (query: string) => {
@@ -98,7 +140,7 @@ const Index = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-gray-50">
         <main className="flex-1 p-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto space-y-8">
             {/* AI Chat Interface */}
             <div className="mb-8 space-y-6">
               <div className="text-center mb-8">
@@ -147,18 +189,57 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="grid gap-6">
-              {/* Recent Activities Card */}
-              <Card className="p-6 bg-white shadow-sm rounded-xl">
-                <h3 className="text-xl font-semibold mb-4 text-primary">Recent Activities</h3>
-                <div className="space-y-4">
-                  {["Research on Commercial Law", "Supreme Court Updates", "New Case Analysis"].map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-2 rounded-lg transition-colors">
-                      <div className="w-2.5 h-2.5 bg-secondary rounded-full" />
-                      <span>{activity}</span>
+            {/* Recently Launched Section */}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-gray-800">Recently Launched</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {recentlyLaunched.map((item, index) => (
+                  <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+                    <div className="flex justify-between items-start mb-4">
+                      <Badge variant="outline" className="bg-gray-100">
+                        {item.tag}
+                      </Badge>
+                      {item.badge && (
+                        <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
+                          {item.badge}
+                        </Badge>
+                      )}
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
                     </div>
-                  ))}
-                </div>
+                    <h3 className="font-semibold mb-2 line-clamp-2">{item.title}</h3>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{item.description}</p>
+                    <div className="text-sm text-gray-500">{item.date}</div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Documents Section */}
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-gray-800">Documents</h2>
+              <Card className="divide-y">
+                {documents.map((doc, index) => (
+                  <div key={index} className="p-4 flex items-center justify-between hover:bg-gray-50">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-2 rounded-lg bg-gray-100">
+                        <doc.icon className="h-5 w-5 text-gray-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">{doc.title}</h3>
+                        <p className="text-sm text-gray-600 line-clamp-1">{doc.description}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                      <span>{doc.location}</span>
+                      <span>{doc.date}</span>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </Card>
             </div>
           </div>
