@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { Badge } from "@/components/ui/badge";
+import { RecentlyLaunchedCard } from "@/components/RecentlyLaunchedCard";
+import { DocumentItem } from "@/components/DocumentItem";
 import {
   MessageSquare,
   Folder,
@@ -16,7 +17,6 @@ import {
   History,
   Pin,
   ArrowRight,
-  MoreVertical,
 } from "lucide-react";
 
 const Index = () => {
@@ -194,24 +194,7 @@ const Index = () => {
               <h2 className="text-2xl font-bold text-gray-800">Recently Launched</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentlyLaunched.map((item, index) => (
-                  <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex justify-between items-start mb-4">
-                      <Badge variant="outline" className="bg-gray-100">
-                        {item.tag}
-                      </Badge>
-                      {item.badge && (
-                        <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
-                          {item.badge}
-                        </Badge>
-                      )}
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <h3 className="font-semibold mb-2 line-clamp-2">{item.title}</h3>
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{item.description}</p>
-                    <div className="text-sm text-gray-500">{item.date}</div>
-                  </Card>
+                  <RecentlyLaunchedCard key={index} {...item} />
                 ))}
               </div>
             </div>
@@ -219,26 +202,9 @@ const Index = () => {
             {/* Documents Section */}
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-gray-800">Documents</h2>
-              <Card className="divide-y">
+              <Card className="divide-y bg-gray-50">
                 {documents.map((doc, index) => (
-                  <div key={index} className="p-4 flex items-center justify-between hover:bg-gray-50">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-2 rounded-lg bg-gray-100">
-                        <doc.icon className="h-5 w-5 text-gray-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium">{doc.title}</h3>
-                        <p className="text-sm text-gray-600 line-clamp-1">{doc.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                      <span>{doc.location}</span>
-                      <span>{doc.date}</span>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+                  <DocumentItem key={index} {...doc} />
                 ))}
               </Card>
             </div>
