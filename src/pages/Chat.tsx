@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, Send, BookmarkPlus } from "lucide-react";
+import { MessageSquare, Send, BookmarkPlus, FolderPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useToast } from "@/components/ui/use-toast";
+import { ChatHistory } from "@/components/ChatHistory";
 
 interface Citation {
   id: string;
@@ -28,12 +29,10 @@ const Chat = () => {
 
   const handleSend = () => {
     if (!message.trim()) return;
-    // Here you would typically handle sending the message
     setMessage("");
   };
 
   const handleSaveSearch = () => {
-    // Here you would typically save the search to your backend
     toast({
       title: "Search Saved",
       description: "Your search has been saved successfully.",
@@ -41,10 +40,16 @@ const Chat = () => {
   };
 
   const handleSaveCitation = (citation: Citation) => {
-    // Here you would typically save the citation to your backend
     toast({
       title: "Citation Saved",
       description: `Citation "${citation.title}" has been saved to your library.`,
+    });
+  };
+
+  const handleAddToCase = () => {
+    toast({
+      title: "Added to Case Folder",
+      description: "This chat has been added to your case folder.",
     });
   };
 
@@ -62,6 +67,13 @@ const Chat = () => {
               Back to Home
             </Button>
           </div>
+          
+          <div className="space-y-6 flex-1">
+            <div className="bg-accent/20 rounded-lg p-4">
+              <h2 className="text-sm font-semibold mb-4">Recent Chats</h2>
+              <ChatHistory />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -74,10 +86,16 @@ const Chat = () => {
               <MessageSquare className="h-5 w-5 text-primary" />
               <h2 className="font-semibold">Legal Research Chat</h2>
             </div>
-            <Button variant="outline" onClick={handleSaveSearch}>
-              <BookmarkPlus className="h-4 w-4 mr-2" />
-              Save Search
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={handleAddToCase}>
+                <FolderPlus className="h-4 w-4 mr-2" />
+                Add to Case
+              </Button>
+              <Button variant="outline" onClick={handleSaveSearch}>
+                <BookmarkPlus className="h-4 w-4 mr-2" />
+                Save Search
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -106,7 +124,7 @@ const Chat = () => {
                       <Button 
                         size="sm" 
                         variant="outline"
-                        className="w-full mt-2"
+                        className="w-full mt-2 text-primary hover:text-primary-foreground"
                         onClick={() => handleSaveCitation(sampleCitation)}
                       >
                         <BookmarkPlus className="h-4 w-4 mr-2" />
