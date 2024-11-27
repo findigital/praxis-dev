@@ -160,23 +160,6 @@ const Index = () => {
                   ))}
                 </div>
               </Card>
-
-              {/* Quick Actions Card */}
-              <Card className="p-6 bg-white shadow-sm rounded-xl">
-                <h3 className="text-xl font-semibold mb-5 text-primary">Quick Actions</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {navigationItems.slice(0, 4).map((item) => (
-                    <Button
-                      key={item.label}
-                      variant="outline"
-                      className="flex items-center justify-center space-x-3 h-24 border-2 border-primary/10 hover:bg-primary hover:text-white transition-all duration-200 rounded-xl shadow-sm group"
-                    >
-                      <item.icon className="w-6 h-6 text-primary group-hover:text-white" />
-                      <span className="font-medium text-gray-700 group-hover:text-white">{item.label}</span>
-                    </Button>
-                  ))}
-                </div>
-              </Card>
             </div>
           </div>
         </main>
