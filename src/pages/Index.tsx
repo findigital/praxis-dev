@@ -113,11 +113,11 @@ const Index = () => {
 
             <div className="grid gap-6">
               {/* Recent Activities Card */}
-              <Card className="p-6 bg-white border border-primary/10 shadow-sm rounded-xl">
+              <Card className="p-6 bg-white shadow-sm rounded-xl">
                 <h3 className="text-xl font-semibold mb-4 text-primary">Recent Activities</h3>
                 <div className="space-y-4">
                   {["Research on Commercial Law", "Supreme Court Updates", "New Case Analysis"].map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 text-base text-gray-700 hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                    <div key={index} className="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-2 rounded-lg transition-colors">
                       <div className="w-2.5 h-2.5 bg-secondary rounded-full" />
                       <span>{activity}</span>
                     </div>
@@ -126,7 +126,7 @@ const Index = () => {
               </Card>
 
               {/* Quick Actions Card */}
-              <Card className="p-6 bg-white border border-primary/10 shadow-sm rounded-xl">
+              <Card className="p-6 bg-white shadow-sm rounded-xl">
                 <h3 className="text-xl font-semibold mb-5 text-primary">Quick Actions</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {navigationItems.slice(0, 4).map((item) => (
@@ -136,7 +136,7 @@ const Index = () => {
                       className="flex items-center justify-center space-x-3 h-24 border-2 border-primary/10 hover:bg-primary hover:text-white transition-all duration-200 rounded-xl shadow-sm group"
                     >
                       <item.icon className="w-6 h-6 text-primary group-hover:text-white" />
-                      <span className="font-medium">{item.label}</span>
+                      <span className="font-medium text-gray-700 group-hover:text-white">{item.label}</span>
                     </Button>
                   ))}
                 </div>
