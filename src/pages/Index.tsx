@@ -14,24 +14,31 @@ import {
   PlusCircle,
   History,
   Pin,
+  ArrowRight,
 } from "lucide-react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
+  const starterQueries = [
+    "What are the recent Supreme Court decisions on intellectual property?",
+    "Explain the key elements of contract law in simple terms",
+    "Find cases related to employment discrimination in tech companies",
+  ];
+
+  const handleSearch = (query: string) => {
+    if (!query.trim()) {
       toast({
-        title: "Please enter a search query",
+        title: "Please enter a research query",
         variant: "destructive",
       });
       return;
     }
+    setSearchQuery(query);
     toast({
-      title: "Searching...",
-      description: "Your AI research assistant is processing your query.",
+      title: "Processing your request...",
+      description: "Your AI research assistant is analyzing your query.",
     });
   };
 
@@ -92,24 +99,53 @@ const Index = () => {
       <div className="flex-1 flex flex-col bg-gray-50">
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSearch} className="mb-8">
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Type your legal research query..."
-                  className="w-full pl-5 pr-14 py-4 bg-white border-2 border-primary/10 placeholder-gray-400 text-gray-800 rounded-xl focus:border-primary focus:ring-primary text-base shadow-sm"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button 
-                  type="submit" 
-                  size="icon"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-primary hover:bg-accent text-white shadow-md"
-                >
-                  <Search className="h-5 w-5" />
-                </Button>
+            {/* AI Chat Interface */}
+            <div className="mb-8 space-y-6">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">How can I assist with your legal research today?</h2>
+                <p className="text-gray-600">Ask me anything about laws, cases, or legal concepts</p>
               </div>
-            </form>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent h-4 z-10"></div>
+                <div className="bg-white rounded-2xl shadow-lg p-6 space-y-4">
+                  {/* Starter Messages */}
+                  <div className="space-y-3 mb-6">
+                    {starterQueries.map((query, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSearch(query)}
+                        className="w-full text-left p-4 rounded-xl bg-gray-50 hover:bg-primary/5 border border-gray-200 transition-colors group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-700 group-hover:text-primary">{query}</span>
+                          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Chat Input */}
+                  <div className="relative mt-4">
+                    <Input
+                      type="text"
+                      placeholder="Type your legal research query..."
+                      className="w-full pl-5 pr-14 py-6 bg-white border-2 border-primary/10 placeholder-gray-400 text-gray-800 rounded-xl focus:border-primary focus:ring-primary text-base shadow-sm"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
+                    />
+                    <Button 
+                      onClick={() => handleSearch(searchQuery)}
+                      size="icon"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/90 text-white shadow-md"
+                    >
+                      <Search className="h-5 w-5" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="grid gap-6">
               {/* Recent Activities Card */}
