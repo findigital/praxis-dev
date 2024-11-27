@@ -2,17 +2,50 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, Send } from "lucide-react";
+import { MessageSquare, Send, BookmarkPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { useToast } from "@/components/ui/use-toast";
+
+interface Citation {
+  id: string;
+  title: string;
+  citation: string;
+  summary: string;
+}
 
 const Chat = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { toast } = useToast();
   
+  const sampleCitation: Citation = {
+    id: "1",
+    title: "Adesina v. State",
+    citation: "[2012] LPELR-7720(SC)",
+    summary: "The Supreme Court held that for a confession to be admissible, it must be voluntary and not obtained through duress, coercion, or inducement. The court emphasized that the prosecution bears the burden of proving the voluntariness of a confession beyond reasonable doubt."
+  };
+
   const handleSend = () => {
     if (!message.trim()) return;
     // Here you would typically handle sending the message
     setMessage("");
+  };
+
+  const handleSaveSearch = () => {
+    // Here you would typically save the search to your backend
+    toast({
+      title: "Search Saved",
+      description: "Your search has been saved successfully.",
+    });
+  };
+
+  const handleSaveCitation = (citation: Citation) => {
+    // Here you would typically save the citation to your backend
+    toast({
+      title: "Citation Saved",
+      description: `Citation "${citation.title}" has been saved to your library.`,
+    });
   };
 
   return (
@@ -36,9 +69,15 @@ const Chat = () => {
       <div className="flex-1 flex flex-col bg-gray-50">
         {/* Chat Header */}
         <div className="border-b p-4 bg-white">
-          <div className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-primary" />
-            <h2 className="font-semibold">Legal Research Chat</h2>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-primary" />
+              <h2 className="font-semibold">Legal Research Chat</h2>
+            </div>
+            <Button variant="outline" onClick={handleSaveSearch}>
+              <BookmarkPlus className="h-4 w-4 mr-2" />
+              Save Search
+            </Button>
           </div>
         </div>
 
@@ -48,6 +87,35 @@ const Chat = () => {
             <div className="bg-white p-4 rounded-lg shadow-sm max-w-[80%]">
               <p className="text-sm text-gray-800">
                 Hello! I'm your AI legal research assistant. How can I help you with Nigerian law today?
+              </p>
+            </div>
+
+            {/* AI Response with Citation */}
+            <div className="bg-white p-4 rounded-lg shadow-sm max-w-[80%] ml-auto">
+              <p className="text-sm text-gray-800 mb-2">
+                Based on Nigerian law, confessions must be voluntary to be admissible in court. In the case of{" "}
+                <HoverCard>
+                  <HoverCardTrigger className="text-primary underline cursor-pointer">
+                    {sampleCitation.title}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">{sampleCitation.title}</h4>
+                      <p className="text-sm text-muted-foreground">{sampleCitation.citation}</p>
+                      <p className="text-sm">{sampleCitation.summary}</p>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        className="w-full mt-2"
+                        onClick={() => handleSaveCitation(sampleCitation)}
+                      >
+                        <BookmarkPlus className="h-4 w-4 mr-2" />
+                        Save Citation
+                      </Button>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+                , the Supreme Court established clear guidelines for the admissibility of confessions.
               </p>
             </div>
           </div>
