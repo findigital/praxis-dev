@@ -31,6 +31,7 @@ const Index = () => {
       {/* Left Sidebar */}
       <div className="w-64 bg-primary text-white border-r border-accent min-h-screen flex flex-col">
         <div className="p-4 flex-1 flex flex-col">
+          <h1 className="text-2xl font-bold text-secondary mb-6 text-center">Praxis</h1>
           <div className="mb-8">
             <Button 
               className="w-full bg-secondary text-primary hover:bg-secondary/90 font-semibold shadow-lg"
