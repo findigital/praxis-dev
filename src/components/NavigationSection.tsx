@@ -8,7 +8,7 @@ export const NavigationSection = () => {
   const navigationItems = [
     { icon: MessageSquare, label: "Legal Research Chat", href: "/chat" },
     { icon: Folder, label: "My Cases", href: "/cases" },
-    { icon: BookOpen, label: "Nigerian Law Library", href: "#" },
+    { icon: BookOpen, label: "Nigerian Law Library", href: "/library" },
     { icon: Mic, label: "Court Transcripts", href: "#" },
     { icon: Users, label: "Legal Team", href: "#" },
     { icon: Settings, label: "Settings", href: "#" },

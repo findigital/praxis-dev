@@ -71,23 +71,23 @@ const LawLibrary = () => {
             <ScrollArea className="h-[calc(100vh-250px)]">
               <div className="grid gap-4">
                 {lawReports.map((report) => (
-                  <Card key={report.id} className="hover:shadow-md transition-shadow">
+                  <Card key={report.id} className="hover:shadow-md transition-shadow bg-primary text-white">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-lg mb-2">{report.title}</h3>
-                          <p className="text-sm text-gray-600">{report.category} • {report.date}</p>
+                          <h3 className="font-semibold text-lg mb-2 text-white">{report.title}</h3>
+                          <p className="text-sm text-white/80">{report.category} • {report.date}</p>
                         </div>
                         <div className="flex space-x-2">
                           <Button
-                            variant="ghost"
+                            variant="secondary"
                             size="icon"
                             onClick={() => handleBookmark(report.title)}
                           >
                             <BookmarkPlus className="h-4 w-4" />
                           </Button>
                           <Button
-                            variant="ghost"
+                            variant="secondary"
                             size="icon"
                             onClick={() => handleAIResearch(report.title)}
                           >
@@ -106,25 +106,25 @@ const LawLibrary = () => {
             <ScrollArea className="h-[calc(100vh-250px)]">
               <div className="grid gap-4">
                 {caseLaw.map((case_) => (
-                  <Card key={case_.id} className="hover:shadow-md transition-shadow">
+                  <Card key={case_.id} className="hover:shadow-md transition-shadow bg-primary text-white">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-lg mb-2">{case_.title}</h3>
-                          <p className="text-sm text-gray-600">
+                          <h3 className="font-semibold text-lg mb-2 text-white">{case_.title}</h3>
+                          <p className="text-sm text-white/80">
                             {case_.jurisdiction} • {case_.citation}
                           </p>
                         </div>
                         <div className="flex space-x-2">
                           <Button
-                            variant="ghost"
+                            variant="secondary"
                             size="icon"
                             onClick={() => handleBookmark(case_.title)}
                           >
                             <BookmarkPlus className="h-4 w-4" />
                           </Button>
                           <Button
-                            variant="ghost"
+                            variant="secondary"
                             size="icon"
                             onClick={() => handleAIResearch(case_.title)}
                           >
@@ -143,25 +143,25 @@ const LawLibrary = () => {
             <ScrollArea className="h-[calc(100vh-250px)]">
               <div className="grid gap-4">
                 {federationLaws.map((law) => (
-                  <Card key={law.id} className="hover:shadow-md transition-shadow">
+                  <Card key={law.id} className="hover:shadow-md transition-shadow bg-primary text-white">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-lg mb-2">{law.title}</h3>
-                          <p className="text-sm text-gray-600">
+                          <h3 className="font-semibold text-lg mb-2 text-white">{law.title}</h3>
+                          <p className="text-sm text-white/80">
                             Year: {law.year} • Last Amended: {law.lastAmended}
                           </p>
                         </div>
                         <div className="flex space-x-2">
                           <Button
-                            variant="ghost"
+                            variant="secondary"
                             size="icon"
                             onClick={() => handleBookmark(law.title)}
                           >
                             <BookmarkPlus className="h-4 w-4" />
                           </Button>
                           <Button
-                            variant="ghost"
+                            variant="secondary"
                             size="icon"
                             onClick={() => handleAIResearch(law.title)}
                           >
