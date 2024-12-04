@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, MessageSquare, PlusCircle, ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText, MessageSquare, PlusCircle } from "lucide-react";
 import { DocumentItem } from "@/components/DocumentItem";
 
 const CaseDetail = () => {
@@ -83,37 +81,33 @@ const CaseDetail = () => {
         </TabsList>
 
         <TabsContent value="documents">
-          <Card>
-            {caseData.documents.map((doc) => (
-              <DocumentItem
-                key={doc.id}
-                icon={FileText}
-                title={doc.title}
-                description={doc.description}
-                date={doc.date}
-                location={doc.location}
-              />
-            ))}
-          </Card>
+          {caseData.documents.map((doc) => (
+            <DocumentItem
+              key={doc.id}
+              icon={FileText}
+              title={doc.title}
+              description={doc.description}
+              date={doc.date}
+              location={doc.location}
+            />
+          ))}
         </TabsContent>
 
         <TabsContent value="chats">
-          <Card>
-            {caseData.chats.map((chat) => (
-              <div key={chat.id} className="p-4 flex items-center justify-between hover:bg-gray-50 border-b last:border-b-0">
-                <div className="flex items-center space-x-4">
-                  <div className="p-2 rounded-lg bg-gray-100">
-                    <MessageSquare className="h-5 w-5 text-gray-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">{chat.title}</h3>
-                    <p className="text-sm text-gray-600">{chat.preview}</p>
-                  </div>
+          {caseData.chats.map((chat) => (
+            <div key={chat.id} className="p-4 flex items-center justify-between hover:bg-gray-50 border-b last:border-b-0">
+              <div className="flex items-center space-x-4">
+                <div className="p-2 rounded-lg bg-gray-100">
+                  <MessageSquare className="h-5 w-5 text-gray-600" />
                 </div>
-                <span className="text-sm text-gray-500">{chat.date}</span>
+                <div>
+                  <h3 className="font-medium">{chat.title}</h3>
+                  <p className="text-sm text-gray-600">{chat.preview}</p>
+                </div>
               </div>
-            ))}
-          </Card>
+              <span className="text-sm text-gray-500">{chat.date}</span>
+            </div>
+          ))}
         </TabsContent>
       </Tabs>
     </div>
