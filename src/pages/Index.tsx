@@ -6,10 +6,12 @@ import { Search, PlusCircle, History, Pin } from "lucide-react";
 import { NavigationSection } from "@/components/NavigationSection";
 import { StarterQueries } from "@/components/StarterQueries";
 import { RecentSection } from "@/components/RecentSection";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSearch = (query: string) => {
     if (!query.trim()) {
@@ -35,7 +37,7 @@ const Index = () => {
           <div className="mb-8">
             <Button 
               className="w-full bg-secondary text-primary hover:bg-secondary/90 font-semibold shadow-lg"
-              onClick={() => toast({ title: "Starting new research session..." })}
+              onClick={() => navigate("/chat")}
             >
               <PlusCircle className="mr-2 h-4 w-4" />
               New Research
