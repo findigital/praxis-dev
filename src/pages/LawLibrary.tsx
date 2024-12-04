@@ -17,8 +17,8 @@ import { useNavigate } from "react-router-dom";
 
 const LawLibrary = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [yearFilter, setYearFilter] = useState("");
-  const [courtFilter, setCourtFilter] = useState("");
+  const [yearFilter, setYearFilter] = useState("all");
+  const [courtFilter, setCourtFilter] = useState("all");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -62,8 +62,8 @@ const LawLibrary = () => {
   const filterItems = (items: any[]) => {
     return items.filter((item) => {
       const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesYear = !yearFilter || item.year === yearFilter || item.date === yearFilter;
-      const matchesCourt = !courtFilter || 
+      const matchesYear = yearFilter === "all" || item.year === yearFilter || item.date === yearFilter;
+      const matchesCourt = courtFilter === "all" || 
         item.jurisdiction === courtFilter || 
         item.category === courtFilter;
       return matchesSearch && matchesYear && matchesCourt;
@@ -89,7 +89,7 @@ const LawLibrary = () => {
                 <SelectValue placeholder="Filter by Year" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Years</SelectItem>
+                <SelectItem value="all">All Years</SelectItem>
                 {years.map((year) => (
                   <SelectItem key={year} value={year}>{year}</SelectItem>
                 ))}
@@ -100,7 +100,7 @@ const LawLibrary = () => {
                 <SelectValue placeholder="Filter by Court" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Courts</SelectItem>
+                <SelectItem value="all">All Courts</SelectItem>
                 {courts.map((court) => (
                   <SelectItem key={court} value={court}>{court}</SelectItem>
                 ))}
