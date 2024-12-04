@@ -23,7 +23,7 @@ const Chat = () => {
   const sampleCitation: Citation = {
     id: "1",
     title: "Adesina v. State",
-    citation: "[2012] LPELR-7720(SC)",
+    citation: "[2012] NLR-7720(SC)",
     summary: "The Supreme Court held that for a confession to be admissible, it must be voluntary and not obtained through duress, coercion, or inducement. The court emphasized that the prosecution bears the burden of proving the voluntariness of a confession beyond reasonable doubt."
   };
 
