@@ -46,7 +46,7 @@ export const TranscriptSummary = ({ transcript }: TranscriptSummaryProps) => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        <Card className="bg-white border-gray-200">
           <CardHeader>
             <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
               <Info className="h-5 w-5 text-gray-600" />
@@ -60,7 +60,7 @@ export const TranscriptSummary = ({ transcript }: TranscriptSummaryProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white border-gray-200">
           <CardHeader>
             <CardTitle className="text-lg text-gray-800 flex items-center gap-2">
               <FileText className="h-5 w-5 text-gray-600" />
