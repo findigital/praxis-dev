@@ -11,7 +11,7 @@ export const NavigationSection = () => {
     { icon: BookOpen, label: "Nigerian Law Library", href: "/library" },
     { icon: Mic, label: "Court Transcripts", href: "/transcripts" },
     { icon: Users, label: "Legal Team", href: "/team" },
-    { icon: Settings, label: "Settings", href: "#" },
+    { icon: Settings, label: "Settings", href: "/settings" },
   ];
 
   const recentChats = [

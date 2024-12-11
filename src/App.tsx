@@ -11,6 +11,7 @@ import CaseDetail from "./pages/CaseDetail";
 import LawLibrary from "./pages/LawLibrary";
 import Transcripts from "./pages/Transcripts";
 import LegalTeam from "./pages/LegalTeam";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/library" element={<Layout><LawLibrary /></Layout>} />
           <Route path="/transcripts" element={<Layout><Transcripts /></Layout>} />
           <Route path="/team" element={<Layout><LegalTeam /></Layout>} />
+          <Route path="/settings" element={<Layout><Settings /></Layout>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
