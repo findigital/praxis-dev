@@ -32,17 +32,17 @@ export const SearchBar = ({
   return (
     <div className="flex items-center space-x-4 mb-6">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         <Input
           placeholder="Search law library..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50"
+          className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/50"
         />
       </div>
       <div className="flex space-x-2">
         <Select value={yearFilter} onValueChange={setYearFilter}>
-          <SelectTrigger className="w-[140px] bg-white/10 border-white/20 text-white">
+          <SelectTrigger className="w-[140px] bg-white/5 border-white/10 text-white">
             <SelectValue placeholder="Filter by Year" />
           </SelectTrigger>
           <SelectContent>
@@ -53,7 +53,7 @@ export const SearchBar = ({
           </SelectContent>
         </Select>
         <Select value={courtFilter} onValueChange={setCourtFilter}>
-          <SelectTrigger className="w-[180px] bg-white/10 border-white/20 text-white">
+          <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
             <SelectValue placeholder="Filter by Court" />
           </SelectTrigger>
           <SelectContent>

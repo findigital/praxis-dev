@@ -22,7 +22,7 @@ export const LibraryItem = ({
   onAIResearch,
 }: LibraryItemProps) => {
   return (
-    <Card className="hover:shadow-md transition-shadow bg-white/10 border-white/20">
+    <Card className="hover:shadow-md transition-shadow bg-white/5 border-white/10">
       <CardContent className="p-4">
         <div className="flex justify-between items-start">
           <div className="cursor-pointer" onClick={() => onItemClick(id, type)}>
