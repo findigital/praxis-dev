@@ -24,29 +24,29 @@ export const CaseCard = ({
 
   return (
     <Card 
-      className="hover:shadow-lg transition-shadow cursor-pointer hover-scale"
+      className="hover:shadow-lg transition-shadow cursor-pointer hover-scale bg-white border-gray-200"
       onClick={() => navigate(`/cases/${id}`)}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <h3 className="font-semibold text-lg">{title}</h3>
+        <h3 className="font-semibold text-lg text-gray-800">{title}</h3>
         <Button variant="ghost" size="icon" onClick={(e) => e.stopPropagation()}>
-          <MoreVertical className="h-4 w-4" />
+          <MoreVertical className="h-4 w-4 text-gray-600" />
         </Button>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground mb-4">{description}</p>
+        <p className="text-sm text-gray-600 mb-4">{description}</p>
         <div className="flex items-center justify-between text-sm">
           <div className="flex space-x-4">
-            <span className="flex items-center text-muted-foreground">
+            <span className="flex items-center text-gray-600">
               <FileText className="h-4 w-4 mr-1" />
               {documentsCount} docs
             </span>
-            <span className="flex items-center text-muted-foreground">
+            <span className="flex items-center text-gray-600">
               <MessageSquare className="h-4 w-4 mr-1" />
               {chatsCount} chats
             </span>
           </div>
-          <span className="text-muted-foreground">{new Date(date).toLocaleDateString()}</span>
+          <span className="text-gray-600">{new Date(date).toLocaleDateString()}</span>
         </div>
       </CardContent>
     </Card>
