@@ -62,7 +62,7 @@ const LawLibrary = () => {
   };
 
   return (
-    <div className="h-full bg-background text-foreground">
+    <div className="h-full bg-background">
       <div className="container mx-auto p-6">
         <SearchBar
           searchQuery={searchQuery}
@@ -76,14 +76,14 @@ const LawLibrary = () => {
         />
 
         <Tabs defaultValue="reports" className="w-full">
-          <TabsList className="mb-4 bg-white/5">
-            <TabsTrigger value="reports" className="text-foreground data-[state=active]:bg-white/10">
+          <TabsList className="mb-4 bg-white">
+            <TabsTrigger value="reports" className="text-gray-800 data-[state=active]:bg-gray-100">
               Law Reports
             </TabsTrigger>
-            <TabsTrigger value="cases" className="text-foreground data-[state=active]:bg-white/10">
+            <TabsTrigger value="cases" className="text-gray-800 data-[state=active]:bg-gray-100">
               Case Library
             </TabsTrigger>
-            <TabsTrigger value="laws" className="text-foreground data-[state=active]:bg-white/10">
+            <TabsTrigger value="laws" className="text-gray-800 data-[state=active]:bg-gray-100">
               Laws of Federation
             </TabsTrigger>
           </TabsList>

@@ -22,12 +22,12 @@ export const LibraryItem = ({
   onAIResearch,
 }: LibraryItemProps) => {
   return (
-    <Card className="hover:shadow-md transition-shadow bg-white/5 border-white/10">
+    <Card className="hover:shadow-md transition-shadow bg-white border-gray-200">
       <CardContent className="p-4">
         <div className="flex justify-between items-start">
           <div className="cursor-pointer" onClick={() => onItemClick(id, type)}>
-            <h3 className="font-semibold text-lg mb-2">{title}</h3>
-            <p className="text-sm opacity-80">{subtitle}</p>
+            <h3 className="font-semibold text-lg mb-2 text-gray-800">{title}</h3>
+            <p className="text-sm text-gray-600">{subtitle}</p>
           </div>
           <div className="flex space-x-2">
             <Button
