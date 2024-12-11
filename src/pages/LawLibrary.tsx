@@ -1,19 +1,10 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, BookOpen, MessageSquare, BookmarkPlus, Filter } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
+import { SearchBar } from "@/components/library/SearchBar";
+import { LibraryItem } from "@/components/library/LibraryItem";
 
 const LawLibrary = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -73,83 +64,44 @@ const LawLibrary = () => {
   return (
     <div className="h-full bg-[#1B3B35] text-white">
       <div className="p-6">
-        <div className="flex items-center space-x-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
-            <Input
-              placeholder="Search law library..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50"
-            />
-          </div>
-          <div className="flex space-x-2">
-            <Select value={yearFilter} onValueChange={setYearFilter}>
-              <SelectTrigger className="w-[140px] bg-white/10 border-white/20 text-white">
-                <SelectValue placeholder="Filter by Year" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Years</SelectItem>
-                {years.map((year) => (
-                  <SelectItem key={year} value={year}>{year}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={courtFilter} onValueChange={setCourtFilter}>
-              <SelectTrigger className="w-[180px] bg-white/10 border-white/20 text-white">
-                <SelectValue placeholder="Filter by Court" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Courts</SelectItem>
-                {courts.map((court) => (
-                  <SelectItem key={court} value={court}>{court}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          yearFilter={yearFilter}
+          setYearFilter={setYearFilter}
+          courtFilter={courtFilter}
+          setCourtFilter={setCourtFilter}
+          years={years}
+          courts={courts}
+        />
 
         <Tabs defaultValue="reports" className="w-full">
           <TabsList className="mb-4 bg-white/10">
-            <TabsTrigger value="reports" className="text-white data-[state=active]:bg-white/20">Law Reports</TabsTrigger>
-            <TabsTrigger value="cases" className="text-white data-[state=active]:bg-white/20">Case Library</TabsTrigger>
-            <TabsTrigger value="laws" className="text-white data-[state=active]:bg-white/20">Laws of Federation</TabsTrigger>
+            <TabsTrigger value="reports" className="text-white data-[state=active]:bg-white/20">
+              Law Reports
+            </TabsTrigger>
+            <TabsTrigger value="cases" className="text-white data-[state=active]:bg-white/20">
+              Case Library
+            </TabsTrigger>
+            <TabsTrigger value="laws" className="text-white data-[state=active]:bg-white/20">
+              Laws of Federation
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="reports">
             <ScrollArea className="h-[calc(100vh-250px)]">
               <div className="grid gap-4">
                 {filterItems(lawReports).map((report) => (
-                  <Card key={report.id} className="hover:shadow-md transition-shadow bg-white/10 border-white/20">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div className="cursor-pointer" onClick={() => handleItemClick(report.id, 'reports')}>
-                          <h3 className="font-semibold text-lg mb-2">{report.title}</h3>
-                          <p className="text-sm opacity-80">
-                            {report.category} • {report.date} • {report.citation}
-                          </p>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            onClick={() => handleBookmark(report.title)}
-                            className="bg-[#FFD700] hover:bg-[#FFD700]/80"
-                          >
-                            <BookmarkPlus className="h-4 w-4 text-[#1B3B35]" />
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            onClick={() => handleAIResearch(report.title)}
-                            className="bg-[#FFD700] hover:bg-[#FFD700]/80"
-                          >
-                            <MessageSquare className="h-4 w-4 text-[#1B3B35]" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <LibraryItem
+                    key={report.id}
+                    id={report.id}
+                    title={report.title}
+                    subtitle={`${report.category} • ${report.date} • ${report.citation}`}
+                    type="reports"
+                    onItemClick={handleItemClick}
+                    onBookmark={handleBookmark}
+                    onAIResearch={handleAIResearch}
+                  />
                 ))}
               </div>
             </ScrollArea>
@@ -159,36 +111,16 @@ const LawLibrary = () => {
             <ScrollArea className="h-[calc(100vh-250px)]">
               <div className="grid gap-4">
                 {filterItems(caseLaw).map((case_) => (
-                  <Card key={case_.id} className="hover:shadow-md transition-shadow bg-white/10 border-white/20">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div className="cursor-pointer" onClick={() => handleItemClick(case_.id, 'cases')}>
-                          <h3 className="font-semibold text-lg mb-2">{case_.title}</h3>
-                          <p className="text-sm opacity-80">
-                            {case_.jurisdiction} • {case_.citation}
-                          </p>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            onClick={() => handleBookmark(case_.title)}
-                            className="bg-[#FFD700] hover:bg-[#FFD700]/80"
-                          >
-                            <BookmarkPlus className="h-4 w-4 text-[#1B3B35]" />
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            onClick={() => handleAIResearch(case_.title)}
-                            className="bg-[#FFD700] hover:bg-[#FFD700]/80"
-                          >
-                            <MessageSquare className="h-4 w-4 text-[#1B3B35]" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <LibraryItem
+                    key={case_.id}
+                    id={case_.id}
+                    title={case_.title}
+                    subtitle={`${case_.jurisdiction} • ${case_.citation}`}
+                    type="cases"
+                    onItemClick={handleItemClick}
+                    onBookmark={handleBookmark}
+                    onAIResearch={handleAIResearch}
+                  />
                 ))}
               </div>
             </ScrollArea>
@@ -198,36 +130,16 @@ const LawLibrary = () => {
             <ScrollArea className="h-[calc(100vh-250px)]">
               <div className="grid gap-4">
                 {filterItems(federationLaws).map((law) => (
-                  <Card key={law.id} className="hover:shadow-md transition-shadow bg-white/10 border-white/20">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div className="cursor-pointer" onClick={() => handleItemClick(law.id, 'laws')}>
-                          <h3 className="font-semibold text-lg mb-2">{law.title}</h3>
-                          <p className="text-sm opacity-80">
-                            {law.category} • Year: {law.year} • Last Amended: {law.lastAmended}
-                          </p>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            onClick={() => handleBookmark(law.title)}
-                            className="bg-[#FFD700] hover:bg-[#FFD700]/80"
-                          >
-                            <BookmarkPlus className="h-4 w-4 text-[#1B3B35]" />
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            onClick={() => handleAIResearch(law.title)}
-                            className="bg-[#FFD700] hover:bg-[#FFD700]/80"
-                          >
-                            <MessageSquare className="h-4 w-4 text-[#1B3B35]" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <LibraryItem
+                    key={law.id}
+                    id={law.id}
+                    title={law.title}
+                    subtitle={`${law.category} • Year: ${law.year} • Last Amended: ${law.lastAmended}`}
+                    type="laws"
+                    onItemClick={handleItemClick}
+                    onBookmark={handleBookmark}
+                    onAIResearch={handleAIResearch}
+                  />
                 ))}
               </div>
             </ScrollArea>
