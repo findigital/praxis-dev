@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Mic, Play, FileText, List } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { TranscriptSummary } from "@/components/transcript/TranscriptSummary";
 
 interface TranscriptItem {
   id: string;
@@ -11,6 +12,7 @@ interface TranscriptItem {
   date: string;
   duration: string;
   summary: string;
+  content: string;
 }
 
 const mockTranscripts: TranscriptItem[] = [
@@ -19,19 +21,22 @@ const mockTranscripts: TranscriptItem[] = [
     title: "Initial Hearing - Smith vs. Johnson",
     date: "2024-02-20",
     duration: "45:23",
-    summary: "Discussion of preliminary motions and scheduling of main hearing dates. Key points included defendant's request for additional discovery time."
+    summary: "Discussion of preliminary motions and scheduling of main hearing dates. Key points included defendant's request for additional discovery time.",
+    content: "Judge: Good morning, everyone. We're here today for the initial hearing in the case of Smith versus Johnson...\n\nMr. Smith's Attorney: Your Honor, we're ready to proceed with our preliminary motions..."
   },
   {
     id: "2",
     title: "Witness Testimony - Dr. Anderson",
     date: "2024-02-19",
     duration: "1:15:45",
-    summary: "Expert witness testimony regarding medical evidence. Detailed analysis of patient records and professional opinion on causation."
+    summary: "Expert witness testimony regarding medical evidence. Detailed analysis of patient records and professional opinion on causation.",
+    content: "Court Clerk: Dr. Anderson, please state your full name and credentials for the record...\n\nDr. Anderson: My name is Sarah Anderson, M.D. I'm board certified in orthopedic surgery..."
   }
 ];
 
 const Transcripts = () => {
   const [isRecording, setIsRecording] = useState(false);
+  const [selectedTranscript, setSelectedTranscript] = useState<TranscriptItem | null>(null);
   const { toast } = useToast();
 
   const handleStartRecording = () => {
@@ -49,6 +54,25 @@ const Transcripts = () => {
       description: "Your recording has been saved and is being transcribed.",
     });
   };
+
+  const handleTranscriptClick = (transcript: TranscriptItem) => {
+    setSelectedTranscript(transcript);
+  };
+
+  if (selectedTranscript) {
+    return (
+      <div className="space-y-6">
+        <Button 
+          variant="outline" 
+          onClick={() => setSelectedTranscript(null)}
+          className="mb-4"
+        >
+          ← Back to Transcripts
+        </Button>
+        <TranscriptSummary transcript={selectedTranscript} />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -76,6 +100,7 @@ const Transcripts = () => {
                   <Card 
                     key={transcript.id}
                     className="hover:shadow-md transition-shadow cursor-pointer bg-gray-50 border-gray-200"
+                    onClick={() => handleTranscriptClick(transcript)}
                   >
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start mb-2">
