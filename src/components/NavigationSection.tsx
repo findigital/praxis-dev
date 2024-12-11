@@ -10,7 +10,7 @@ export const NavigationSection = () => {
     { icon: Folder, label: "My Cases", href: "/cases" },
     { icon: BookOpen, label: "Nigerian Law Library", href: "/library" },
     { icon: Mic, label: "Court Transcripts", href: "/transcripts" },
-    { icon: Users, label: "Legal Team", href: "#" },
+    { icon: Users, label: "Legal Team", href: "/team" },
     { icon: Settings, label: "Settings", href: "#" },
   ];
 
