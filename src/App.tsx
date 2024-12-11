@@ -9,6 +9,7 @@ import Chat from "./pages/Chat";
 import Cases from "./pages/Cases";
 import CaseDetail from "./pages/CaseDetail";
 import LawLibrary from "./pages/LawLibrary";
+import Transcripts from "./pages/Transcripts";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/cases" element={<Layout><Cases /></Layout>} />
           <Route path="/cases/:id" element={<Layout><CaseDetail /></Layout>} />
           <Route path="/library" element={<Layout><LawLibrary /></Layout>} />
+          <Route path="/transcripts" element={<Layout><Transcripts /></Layout>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
