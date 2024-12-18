@@ -1,7 +1,9 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { NavigationSection } from "@/components/NavigationSection";
-import { BookmarkPlus, Search } from "lucide-react";
+import { BookmarkPlus, Search, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,8 +12,26 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   
   const isChat = location.pathname === "/chat";
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/login");
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error logging out",
+        description: "There was a problem logging out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -29,6 +49,16 @@ export const Layout = ({ children }: LayoutProps) => {
         </div>
         <div className="flex-1 px-4">
           <NavigationSection />
+        </div>
+        <div className="p-4">
+          <Button
+            variant="ghost"
+            className="w-full text-white hover:bg-white/10 flex items-center justify-center"
+            onClick={handleLogout}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
         </div>
       </div>
 
