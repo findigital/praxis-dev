@@ -16,13 +16,14 @@ export const ragieService = {
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Stack AI Error:", errorData);
         throw new Error(`API request failed with status ${response.status}`);
       }
 
       const data = await response.json();
       console.log("Stack AI Response:", data);
       
-      // Return the response from the "out-0" field, or a default message if not found
       return data["out-0"] || "I couldn't generate a response at this time.";
     } catch (error) {
       console.error("Error generating answer:", error);
