@@ -6,7 +6,7 @@ export const ragieService = {
       const response = await fetch(STACK_AI_URL, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${import.meta.env.VITE_STACK_AI_API_KEY}`,
+          "Authorization": "Bearer b615fa22-65f3-4593-bb9a-32a0a177be4c",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
