@@ -31,6 +31,7 @@ const Chat = () => {
       const response = await ragieService.generateAnswer(message);
       setMessages(prev => [...prev, { content: response, isUser: false }]);
     } catch (error) {
+      console.error("Chat error:", error);
       toast({
         title: "Error",
         description: "Failed to get response. Please try again.",
