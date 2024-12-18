@@ -3,7 +3,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { AuthChangeEvent } from "@supabase/supabase-js";
 
 const Login = () => {
@@ -72,10 +72,22 @@ const Login = () => {
                 color: '#1B3B35',
                 textDecoration: 'underline',
               },
+              message: {
+                color: 'red',
+                fontSize: '0.875rem',
+                marginTop: '0.5rem',
+              }
             },
           }}
           providers={[]}
           redirectTo={window.location.origin}
+          onError={(error) => {
+            toast({
+              title: "Authentication Error",
+              description: error.message,
+              variant: "destructive",
+            });
+          }}
         />
       </div>
     </div>
