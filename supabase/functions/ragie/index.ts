@@ -27,13 +27,18 @@ serve(async (req) => {
 
     console.log(`Forwarding request to Ragie API: ${targetUrl}`);
 
-    let body;
+    let requestBody;
     if (req.method !== 'GET') {
       const contentType = req.headers.get('content-type');
       if (contentType?.includes('multipart/form-data')) {
-        body = await req.formData();
+        requestBody = await req.formData();
       } else {
-        body = await req.json();
+        const body = await req.json();
+        // Add rerank parameter if not present
+        if (endpoint === 'retrievals' && !body.rerank) {
+          body.rerank = true;
+        }
+        requestBody = JSON.stringify(body);
       }
     }
 
@@ -44,7 +49,7 @@ serve(async (req) => {
         'Authorization': `Bearer ${ragieApiKey}`,
         'Content-Type': req.headers.get('content-type') || 'application/json',
       },
-      body: body instanceof FormData ? body : JSON.stringify(body),
+      body: requestBody instanceof FormData ? requestBody : requestBody,
     });
 
     if (!response.ok) {
@@ -56,6 +61,7 @@ serve(async (req) => {
     }
 
     const data = await response.json();
+    console.log('Ragie API response:', data);
     
     return new Response(JSON.stringify(data), { 
       headers: { 

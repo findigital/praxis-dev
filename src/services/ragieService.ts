@@ -11,12 +11,47 @@ interface RetrievalResponse {
   scored_chunks: ScoredChunk[];
 }
 
+interface GenerateResponse {
+  answer: string;
+}
+
 export const ragieService = {
   async retrieveChunks(query: string): Promise<RetrievalResponse> {
     try {
       console.log('Attempting to retrieve chunks...');
       
       const { data, error } = await supabase.functions.invoke('ragie/retrievals', {
+        body: {
+          query,
+          filter: { scope: "tutorial" },
+          rerank: true,
+          limit: 8 // Explicitly set limit as per docs
+        }
+      });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data || !Array.isArray(data.scored_chunks)) {
+        console.error('Invalid response format:', data);
+        throw new Error('Invalid response format from Ragie API');
+      }
+      
+      console.log('Chunks retrieval successful:', data);
+      return data;
+    } catch (error) {
+      console.error('Error retrieving chunks:', error);
+      throw error;
+    }
+  },
+
+  async generateAnswer(query: string): Promise<GenerateResponse> {
+    try {
+      console.log('Starting answer generation process...');
+      
+      const { data, error } = await supabase.functions.invoke('ragie/tutorial/generate', {
         body: {
           query,
           filter: { scope: "tutorial" },
@@ -29,36 +64,8 @@ export const ragieService = {
         throw error;
       }
 
-      if (!data) {
-        throw new Error('No data received from Ragie API');
-      }
-      
-      console.log('Chunks retrieval successful:', data);
-      return data;
-    } catch (error) {
-      console.error('Error retrieving chunks:', error);
-      throw error;
-    }
-  },
-
-  async generateAnswer(query: string) {
-    try {
-      console.log('Starting answer generation process...');
-      
-      const { data, error } = await supabase.functions.invoke('ragie/tutorial/generate', {
-        body: {
-          query,
-          rerank: true,
-          filter: { scope: "tutorial" }
-        }
-      });
-
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw error;
-      }
-
-      if (!data || !data.answer) {
+      if (!data || typeof data.answer !== 'string') {
+        console.error('Invalid response format:', data);
         throw new Error('Invalid response format from Ragie API');
       }
       
