@@ -27,29 +27,22 @@ serve(async (req) => {
 
     console.log(`Forwarding request to Ragie API: ${targetUrl}`);
 
-    let requestBody;
-    if (req.method !== 'GET') {
-      const contentType = req.headers.get('content-type');
-      if (contentType?.includes('multipart/form-data')) {
-        requestBody = await req.formData();
-      } else {
-        const body = await req.json();
-        // Add rerank parameter if not present
-        if (endpoint === 'retrievals' && !body.rerank) {
-          body.rerank = true;
-        }
-        requestBody = JSON.stringify(body);
-      }
-    }
+    const body = await req.json();
+    const requestBody = {
+      ...body,
+      rerank: true,
+      limit: 8
+    };
 
-    // Forward the request to Ragie API
+    console.log('Request body:', requestBody);
+
     const response = await fetch(targetUrl, {
-      method: req.method,
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${ragieApiKey}`,
-        'Content-Type': req.headers.get('content-type') || 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: requestBody instanceof FormData ? requestBody : requestBody,
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
@@ -62,6 +55,11 @@ serve(async (req) => {
 
     const data = await response.json();
     console.log('Ragie API response:', data);
+
+    // Transform the response for the generate endpoint
+    if (endpoint === 'tutorial/generate' && data.generation) {
+      data.answer = data.generation;
+    }
     
     return new Response(JSON.stringify(data), { 
       headers: { 

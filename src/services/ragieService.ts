@@ -12,7 +12,8 @@ interface RetrievalResponse {
 }
 
 interface GenerateResponse {
-  answer: string;
+  answer?: string;
+  generation?: string;
 }
 
 export const ragieService = {
@@ -23,9 +24,7 @@ export const ragieService = {
       const { data, error } = await supabase.functions.invoke('ragie/retrievals', {
         body: {
           query,
-          filter: { scope: "tutorial" },
-          rerank: true,
-          limit: 8 // Explicitly set limit as per docs
+          filter: { scope: "tutorial" }
         }
       });
 
@@ -47,15 +46,14 @@ export const ragieService = {
     }
   },
 
-  async generateAnswer(query: string): Promise<GenerateResponse> {
+  async generateAnswer(query: string): Promise<string> {
     try {
       console.log('Starting answer generation process...');
       
       const { data, error } = await supabase.functions.invoke('ragie/tutorial/generate', {
         body: {
           query,
-          filter: { scope: "tutorial" },
-          rerank: true
+          filter: { scope: "tutorial" }
         }
       });
 
@@ -64,13 +62,14 @@ export const ragieService = {
         throw error;
       }
 
-      if (!data || typeof data.answer !== 'string') {
+      const response = data as GenerateResponse;
+      if (!response || (!response.answer && !response.generation)) {
         console.error('Invalid response format:', data);
         throw new Error('Invalid response format from Ragie API');
       }
       
-      console.log('Answer generation successful:', data);
-      return data;
+      console.log('Answer generation successful:', response);
+      return response.answer || response.generation || 'No answer generated';
     } catch (error) {
       console.error('Error generating answer:', error);
       throw error;
