@@ -32,10 +32,6 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      if (!import.meta.env.VITE_RAGIE_API_KEY) {
-        throw new Error('Ragie API key is not configured');
-      }
-
       // First get relevant chunks
       const chunksResponse = await ragieService.retrieveChunks(message);
       console.log('Retrieved chunks:', chunksResponse);
@@ -60,7 +56,7 @@ const Chat = () => {
       console.error('Chat error:', error);
       toast({
         title: "Error",
-        description: "Failed to get response. Please check your API key configuration and try again.",
+        description: "Failed to get response. Please try again or contact support if the issue persists.",
         variant: "destructive"
       });
       

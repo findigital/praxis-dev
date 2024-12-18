@@ -4,17 +4,37 @@ const RAGIE_API_BASE_URL = 'https://api.ragie.ai';
 
 serve(async (req) => {
   try {
+    // Handle CORS preflight requests
+    if (req.method === 'OPTIONS') {
+      return new Response(null, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+      });
+    }
+
     const ragieApiKey = Deno.env.get('VITE_RAGIE_API_KEY');
     if (!ragieApiKey) {
+      console.error('Ragie API key not found in environment variables');
       return new Response(
-        JSON.stringify({ error: 'Ragie API key not configured' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: 'Ragie API key not configured on the server' }),
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          } 
+        }
       );
     }
 
     const url = new URL(req.url);
     const endpoint = url.pathname.replace('/ragie/', '');
     const targetUrl = `${RAGIE_API_BASE_URL}/${endpoint}`;
+
+    console.log(`Forwarding request to: ${targetUrl}`);
 
     const response = await fetch(targetUrl, {
       method: req.method,
@@ -39,6 +59,7 @@ serve(async (req) => {
       }
     );
   } catch (error) {
+    console.error('Edge function error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { 

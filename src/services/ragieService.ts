@@ -48,11 +48,6 @@ export const ragieService = {
     try {
       console.log('Starting answer generation process...');
       
-      // First retrieve relevant chunks
-      const chunks = await this.retrieveChunks(query);
-      console.log('Retrieved chunks:', chunks);
-
-      // Then generate answer using the tutorial endpoint
       const response = await axios.post(
         `${EDGE_FUNCTION_URL}/tutorial/generate`,
         {
