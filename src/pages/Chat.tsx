@@ -2,17 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, BookmarkPlus } from "lucide-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Send } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ragieService } from "@/services/ragieService";
-
-interface Citation {
-  id: string;
-  title: string;
-  citation: string;
-  summary: string;
-}
 
 interface Message {
   content: string;
@@ -22,18 +14,11 @@ interface Message {
 const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([{
-    content: "Hello! I'm your AI legal research assistant. How can I help you with Nigerian law today?",
+    content: "Hello! I'm your AI assistant. How can I help you today?",
     isUser: false
   }]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  
-  const sampleCitation: Citation = {
-    id: "1",
-    title: "Adesina v. State",
-    citation: "[2012] NLR-7720(SC)",
-    summary: "The Supreme Court held that for a confession to be admissible, it must be voluntary and not obtained through duress, coercion, or inducement. The court emphasized that the prosecution bears the burden of proving the voluntariness of a confession beyond reasonable doubt."
-  };
 
   const handleSend = async () => {
     if (!message.trim()) return;
@@ -44,7 +29,7 @@ const Chat = () => {
 
     try {
       const response = await ragieService.generateAnswer(message);
-      setMessages(prev => [...prev, { content: response.answer || "I apologize, I couldn't generate an answer.", isUser: false }]);
+      setMessages(prev => [...prev, { content: response, isUser: false }]);
     } catch (error) {
       toast({
         title: "Error",
@@ -55,13 +40,6 @@ const Chat = () => {
       setIsLoading(false);
       setMessage("");
     }
-  };
-
-  const handleSaveCitation = (citation: Citation) => {
-    toast({
-      title: "Citation Saved",
-      description: `Citation "${citation.title}" has been saved to your library.`,
-    });
   };
 
   return (
