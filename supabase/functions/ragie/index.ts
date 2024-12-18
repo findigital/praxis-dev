@@ -2,17 +2,33 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const RAGIE_API_BASE_URL = 'https://api.ragie.ai';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+}
+
 serve(async (req) => {
   try {
     // Handle CORS preflight requests
     if (req.method === 'OPTIONS') {
-      return new Response(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-      });
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // Verify authorization
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('Missing authorization header');
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { 
+          status: 401, 
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
     }
 
     const ragieApiKey = Deno.env.get('VITE_RAGIE_API_KEY');
@@ -23,8 +39,8 @@ serve(async (req) => {
         { 
           status: 500, 
           headers: { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            ...corsHeaders,
+            'Content-Type': 'application/json'
           } 
         }
       );
@@ -51,10 +67,8 @@ serve(async (req) => {
       JSON.stringify(data),
       { 
         headers: { 
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+          ...corsHeaders,
+          'Content-Type': 'application/json'
         } 
       }
     );
@@ -65,8 +79,8 @@ serve(async (req) => {
       { 
         status: 500,
         headers: { 
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          ...corsHeaders,
+          'Content-Type': 'application/json'
         } 
       }
     );

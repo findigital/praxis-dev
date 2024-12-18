@@ -25,6 +25,11 @@ export const ragieService = {
           query,
           filter: { scope: "tutorial" },
           rerank: true
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          }
         }
       );
       
@@ -54,6 +59,11 @@ export const ragieService = {
           query,
           rerank: true,
           filter: { scope: "tutorial" }
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          }
         }
       );
       
@@ -87,7 +97,8 @@ export const ragieService = {
         formData,
         {
           headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
           }
         }
       );
