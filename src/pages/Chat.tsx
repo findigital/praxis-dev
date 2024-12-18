@@ -2,17 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, BookmarkPlus } from "lucide-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { useToast } from "@/components/ui/use-toast";
+import { Send } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { ragieService } from "@/services/ragieService";
-
-interface Citation {
-  id: string;
-  title: string;
-  citation: string;
-  summary: string;
-}
 
 interface Message {
   content: string;
@@ -27,13 +19,6 @@ const Chat = () => {
   }]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  
-  const sampleCitation: Citation = {
-    id: "1",
-    title: "Adesina v. State",
-    citation: "[2012] NLR-7720(SC)",
-    summary: "The Supreme Court held that for a confession to be admissible, it must be voluntary and not obtained through duress, coercion, or inducement. The court emphasized that the prosecution bears the burden of proving the voluntariness of a confession beyond reasonable doubt."
-  };
 
   const handleSend = async () => {
     if (!message.trim()) return;
@@ -43,25 +28,38 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
+      if (!import.meta.env.VITE_RAGIE_API_KEY) {
+        throw new Error('Ragie API key is not configured');
+      }
+
       const response = await ragieService.generateAnswer(message);
-      setMessages(prev => [...prev, { content: response.answer || "I apologize, I couldn't generate an answer.", isUser: false }]);
+      
+      if (!response || !response.answer) {
+        throw new Error('Invalid response from Ragie API');
+      }
+
+      setMessages(prev => [...prev, { 
+        content: response.answer, 
+        isUser: false 
+      }]);
+      
     } catch (error) {
+      console.error('Chat error:', error);
       toast({
         title: "Error",
-        description: "Failed to get response. Please try again.",
+        description: "Failed to get response. Please check your API key configuration and try again.",
         variant: "destructive"
       });
+      
+      // Add error message to chat
+      setMessages(prev => [...prev, { 
+        content: "I apologize, but I encountered an error processing your request. Please try again or contact support if the issue persists.", 
+        isUser: false 
+      }]);
     } finally {
       setIsLoading(false);
       setMessage("");
     }
-  };
-
-  const handleSaveCitation = (citation: Citation) => {
-    toast({
-      title: "Citation Saved",
-      description: `Citation "${citation.title}" has been saved to your library.`,
-    });
   };
 
   return (
@@ -72,7 +70,7 @@ const Chat = () => {
             <div
               key={index}
               className={`bg-white p-4 rounded-lg shadow-sm max-w-[80%] ${
-                msg.isUser ? "ml-auto" : ""
+                msg.isUser ? "ml-auto bg-primary/10" : ""
               }`}
             >
               <p className="text-sm text-gray-800">{msg.content}</p>

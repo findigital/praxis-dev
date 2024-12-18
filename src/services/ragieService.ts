@@ -1,6 +1,11 @@
 import axios from 'axios';
 
 const RAGIE_API_BASE_URL = 'https://api.ragie.ai';
+const RAGIE_API_KEY = import.meta.env.VITE_RAGIE_API_KEY;
+
+if (!RAGIE_API_KEY) {
+  console.error('RAGIE_API_KEY is not set in environment variables');
+}
 
 export const ragieService = {
   async generateAnswer(query: string) {
@@ -15,7 +20,7 @@ export const ragieService = {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_RAGIE_API_KEY}`
+            'Authorization': `Bearer ${RAGIE_API_KEY}`
           }
         }
       );
@@ -39,7 +44,7 @@ export const ragieService = {
         {
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_RAGIE_API_KEY}`,
+            'Authorization': `Bearer ${RAGIE_API_KEY}`
           }
         }
       );
