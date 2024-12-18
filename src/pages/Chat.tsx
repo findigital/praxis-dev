@@ -2,17 +2,21 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Send, BookmarkPlus } from "lucide-react";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { useToast } from "@/components/ui/use-toast";
 import { ragieService } from "@/services/ragieService";
+
+interface Citation {
+  id: string;
+  title: string;
+  citation: string;
+  summary: string;
+}
 
 interface Message {
   content: string;
   isUser: boolean;
-  chunks?: Array<{
-    text: string;
-    score: number;
-  }>;
 }
 
 const Chat = () => {
@@ -23,6 +27,13 @@ const Chat = () => {
   }]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  
+  const sampleCitation: Citation = {
+    id: "1",
+    title: "Adesina v. State",
+    citation: "[2012] NLR-7720(SC)",
+    summary: "The Supreme Court held that for a confession to be admissible, it must be voluntary and not obtained through duress, coercion, or inducement. The court emphasized that the prosecution bears the burden of proving the voluntariness of a confession beyond reasonable doubt."
+  };
 
   const handleSend = async () => {
     if (!message.trim()) return;
@@ -32,43 +43,25 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      // First get relevant chunks
-      const chunksResponse = await ragieService.retrieveChunks(message);
-      console.log('Retrieved chunks:', chunksResponse);
-
-      // Then get the generated answer
-      const answer = await ragieService.generateAnswer(message);
-      
-      if (!answer) {
-        throw new Error('Invalid response from Ragie API');
-      }
-
-      setMessages(prev => [...prev, { 
-        content: answer, 
-        isUser: false,
-        chunks: chunksResponse.scored_chunks.map(chunk => ({
-          text: chunk.text,
-          score: chunk.score
-        }))
-      }]);
-      
+      const response = await ragieService.generateAnswer(message);
+      setMessages(prev => [...prev, { content: response.answer || "I apologize, I couldn't generate an answer.", isUser: false }]);
     } catch (error) {
-      console.error('Chat error:', error);
       toast({
         title: "Error",
-        description: "Failed to get response. Please try again or contact support if the issue persists.",
+        description: "Failed to get response. Please try again.",
         variant: "destructive"
       });
-      
-      // Add error message to chat
-      setMessages(prev => [...prev, { 
-        content: "I apologize, but I encountered an error processing your request. Please try again or contact support if the issue persists.", 
-        isUser: false 
-      }]);
     } finally {
       setIsLoading(false);
       setMessage("");
     }
+  };
+
+  const handleSaveCitation = (citation: Citation) => {
+    toast({
+      title: "Citation Saved",
+      description: `Citation "${citation.title}" has been saved to your library.`,
+    });
   };
 
   return (
@@ -76,27 +69,13 @@ const Chat = () => {
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
           {messages.map((msg, index) => (
-            <div key={index}>
-              <div className={`bg-white p-4 rounded-lg shadow-sm max-w-[80%] ${
-                msg.isUser ? "ml-auto bg-primary/10" : ""
-              }`}>
-                <p className="text-sm text-gray-800">{msg.content}</p>
-              </div>
-              
-              {/* Show retrieved chunks if available */}
-              {!msg.isUser && msg.chunks && msg.chunks.length > 0 && (
-                <div className="mt-2 space-y-2">
-                  <p className="text-xs text-gray-500 font-medium">Retrieved from:</p>
-                  {msg.chunks.map((chunk, chunkIndex) => (
-                    <div key={chunkIndex} className="bg-gray-50 p-2 rounded text-xs text-gray-600">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-gray-400">Relevance: {(chunk.score * 100).toFixed(1)}%</span>
-                      </div>
-                      {chunk.text}
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div
+              key={index}
+              className={`bg-white p-4 rounded-lg shadow-sm max-w-[80%] ${
+                msg.isUser ? "ml-auto" : ""
+              }`}
+            >
+              <p className="text-sm text-gray-800">{msg.content}</p>
             </div>
           ))}
           {isLoading && (
