@@ -49,22 +49,24 @@ const Chat = () => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`bg-white p-4 rounded-lg shadow-sm max-w-[80%] ${
-                msg.isUser ? "ml-auto" : ""
-              }`}
+              className={`${
+                msg.isUser 
+                  ? "ml-auto bg-primary text-primary-foreground" 
+                  : "bg-muted"
+              } p-4 rounded-lg shadow-sm max-w-[80%]`}
             >
-              <p className="text-sm text-gray-800">{msg.content}</p>
+              <p className="text-sm">{msg.content}</p>
             </div>
           ))}
           {isLoading && (
-            <div className="bg-white p-4 rounded-lg shadow-sm max-w-[80%]">
-              <p className="text-sm text-gray-500">Thinking...</p>
+            <div className="bg-muted p-4 rounded-lg shadow-sm max-w-[80%]">
+              <p className="text-sm text-muted-foreground">Thinking...</p>
             </div>
           )}
         </div>
       </ScrollArea>
 
-      <div className="border-t p-4 bg-white">
+      <div className="border-t p-4">
         <div className="flex gap-2">
           <Input
             value={message}
