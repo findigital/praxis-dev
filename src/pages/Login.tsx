@@ -11,7 +11,6 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in
     supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       console.log("Auth state changed:", event, session);
       if (session) {
@@ -23,7 +22,6 @@ const Login = () => {
       }
     });
 
-    // Check initial session
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
