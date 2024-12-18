@@ -18,49 +18,58 @@ serve(async (req) => {
     const ragieApiKey = Deno.env.get('VITE_RAGIE_API_KEY');
     if (!ragieApiKey) {
       console.error('Ragie API key not found in environment variables');
-      return new Response(
-        JSON.stringify({ error: 'Ragie API key not configured on the server' }),
-        { 
-          status: 500, 
-          headers: { 
-            ...corsHeaders,
-            'Content-Type': 'application/json'
-          } 
-        }
-      );
+      throw new Error('Ragie API key not configured');
     }
 
     const url = new URL(req.url);
     const endpoint = url.pathname.replace('/ragie/', '');
     const targetUrl = `${RAGIE_API_BASE_URL}/${endpoint}`;
 
-    console.log(`Forwarding request to: ${targetUrl}`);
+    console.log(`Forwarding request to Ragie API: ${targetUrl}`);
+
+    let body;
+    if (req.method !== 'GET') {
+      const contentType = req.headers.get('content-type');
+      if (contentType?.includes('multipart/form-data')) {
+        body = await req.formData();
+      } else {
+        body = await req.json();
+      }
+    }
 
     // Forward the request to Ragie API
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ragieApiKey}`
+        'Authorization': `Bearer ${ragieApiKey}`,
+        'Content-Type': req.headers.get('content-type') || 'application/json',
       },
-      body: req.method !== 'GET' ? await req.text() : undefined
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
+
+    if (!response.ok) {
+      console.error('Ragie API error:', {
+        status: response.status,
+        statusText: response.statusText,
+      });
+      throw new Error(`Ragie API error: ${response.statusText}`);
+    }
 
     const data = await response.json();
     
-    return new Response(
-      JSON.stringify(data),
-      { 
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        } 
-      }
-    );
+    return new Response(JSON.stringify(data), { 
+      headers: { 
+        ...corsHeaders,
+        'Content-Type': 'application/json'
+      } 
+    });
   } catch (error) {
     console.error('Edge function error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message || 'Internal server error',
+        details: error.toString()
+      }),
       { 
         status: 500,
         headers: { 

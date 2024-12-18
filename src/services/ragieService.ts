@@ -24,9 +24,16 @@ export const ragieService = {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('No data received from Ragie API');
+      }
       
-      console.log('Chunks retrieval successful');
+      console.log('Chunks retrieval successful:', data);
       return data;
     } catch (error) {
       console.error('Error retrieving chunks:', error);
@@ -46,9 +53,16 @@ export const ragieService = {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data || !data.answer) {
+        throw new Error('Invalid response format from Ragie API');
+      }
       
-      console.log('Answer generation successful');
+      console.log('Answer generation successful:', data);
       return data;
     } catch (error) {
       console.error('Error generating answer:', error);
@@ -69,9 +83,16 @@ export const ragieService = {
         body: formData
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('No data received from Ragie API');
+      }
       
-      console.log('Document upload successful');
+      console.log('Document upload successful:', data);
       return data;
     } catch (error) {
       console.error('Error uploading document:', error);
