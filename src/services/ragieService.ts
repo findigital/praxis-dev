@@ -1,11 +1,7 @@
 import axios from 'axios';
 
-const RAGIE_API_BASE_URL = 'https://api.ragie.ai';
-const RAGIE_API_KEY = import.meta.env.VITE_RAGIE_API_KEY;
-
-if (!RAGIE_API_KEY) {
-  console.error('RAGIE_API_KEY is not set in environment variables');
-}
+const SUPABASE_PROJECT_ID = 'zfeipxfyvimsjbsljpvc';
+const EDGE_FUNCTION_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/ragie`;
 
 interface ScoredChunk {
   text: string;
@@ -21,26 +17,17 @@ interface RetrievalResponse {
 export const ragieService = {
   async retrieveChunks(query: string): Promise<RetrievalResponse> {
     try {
-      console.log('Attempting to retrieve chunks with API key:', RAGIE_API_KEY ? 'Present' : 'Missing');
+      console.log('Attempting to retrieve chunks...');
       
-      if (!RAGIE_API_KEY) {
-        throw new Error('Ragie API key is not configured. Please set VITE_RAGIE_API_KEY.');
-      }
-
       const response = await axios.post(
-        `${RAGIE_API_BASE_URL}/retrievals`,
+        `${EDGE_FUNCTION_URL}/retrievals`,
         {
           query,
           filter: { scope: "tutorial" },
           rerank: true
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${RAGIE_API_KEY}`
-          }
         }
       );
+      
       console.log('Chunks retrieval successful:', response.status);
       return response.data;
     } catch (error) {
@@ -48,8 +35,7 @@ export const ragieService = {
         console.error('Axios error retrieving chunks:', {
           status: error.response?.status,
           statusText: error.response?.statusText,
-          data: error.response?.data,
-          headers: error.response?.headers
+          data: error.response?.data
         });
       } else {
         console.error('Error retrieving chunks:', error);
@@ -62,29 +48,20 @@ export const ragieService = {
     try {
       console.log('Starting answer generation process...');
       
-      if (!RAGIE_API_KEY) {
-        throw new Error('Ragie API key is not configured. Please set VITE_RAGIE_API_KEY.');
-      }
-
       // First retrieve relevant chunks
       const chunks = await this.retrieveChunks(query);
       console.log('Retrieved chunks:', chunks);
 
       // Then generate answer using the tutorial endpoint
       const response = await axios.post(
-        `${RAGIE_API_BASE_URL}/tutorial/generate`,
+        `${EDGE_FUNCTION_URL}/tutorial/generate`,
         {
           query,
           rerank: true,
           filter: { scope: "tutorial" }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${RAGIE_API_KEY}`
-          }
         }
       );
+      
       console.log('Answer generation successful:', response.status);
       return response.data;
     } catch (error) {
@@ -92,8 +69,7 @@ export const ragieService = {
         console.error('Axios error generating answer:', {
           status: error.response?.status,
           statusText: error.response?.statusText,
-          data: error.response?.data,
-          headers: error.response?.headers
+          data: error.response?.data
         });
       } else {
         console.error('Error generating answer:', error);
@@ -111,20 +87,16 @@ export const ragieService = {
     try {
       console.log('Attempting to upload document...');
       
-      if (!RAGIE_API_KEY) {
-        throw new Error('Ragie API key is not configured. Please set VITE_RAGIE_API_KEY.');
-      }
-
       const response = await axios.post(
-        `${RAGIE_API_BASE_URL}/documents`,
+        `${EDGE_FUNCTION_URL}/documents`,
         formData,
         {
           headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${RAGIE_API_KEY}`
+            'Accept': 'application/json'
           }
         }
       );
+      
       console.log('Document upload successful:', response.status);
       return response.data;
     } catch (error) {
@@ -132,8 +104,7 @@ export const ragieService = {
         console.error('Axios error uploading document:', {
           status: error.response?.status,
           statusText: error.response?.statusText,
-          data: error.response?.data,
-          headers: error.response?.headers
+          data: error.response?.data
         });
       } else {
         console.error('Error uploading document:', error);
