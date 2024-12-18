@@ -12,16 +12,10 @@ const Login = () => {
 
   useEffect(() => {
     // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
       if (session) {
         navigate("/");
       }
-    });
-
-    // Listen for auth errors
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
       if (event === 'SIGNED_OUT') {
         toast({
           title: "Signed out",
@@ -30,9 +24,14 @@ const Login = () => {
       }
     });
 
-    return () => {
-      subscription.unsubscribe();
+    // Check initial session
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate("/");
+      }
     };
+    checkUser();
   }, [navigate, toast]);
 
   return (
@@ -53,6 +52,9 @@ const Login = () => {
                   inputBorder: '#E2E8F0',
                   inputBorderHover: '#1B3B35',
                   inputBorderFocus: '#1B3B35',
+                  messageText: 'red',
+                  messageBackground: '#FEE2E2',
+                  messageBorder: '#FECACA',
                 }
               }
             },
@@ -73,9 +75,10 @@ const Login = () => {
                 textDecoration: 'underline',
               },
               message: {
-                color: 'red',
+                padding: '0.75rem',
+                marginBottom: '1rem',
+                borderRadius: '0.375rem',
                 fontSize: '0.875rem',
-                marginTop: '0.5rem',
               }
             },
           }}
