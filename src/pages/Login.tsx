@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { AuthChangeEvent } from "@supabase/supabase-js";
+import { AuthChangeEvent, Session } from "@supabase/supabase-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,14 +12,13 @@ const Login = () => {
 
   useEffect(() => {
     // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
+    supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
+      console.log("Auth state changed:", event, session);
       if (session) {
         navigate("/");
-      }
-      if (event === 'SIGNED_OUT') {
         toast({
-          title: "Signed out",
-          description: "You have been signed out successfully.",
+          title: "Logged in successfully",
+          description: "Welcome back!",
         });
       }
     });
@@ -52,7 +51,7 @@ const Login = () => {
                   inputBorder: '#E2E8F0',
                   inputBorderHover: '#1B3B35',
                   inputBorderFocus: '#1B3B35',
-                  messageText: 'red',
+                  messageText: '#EF4444',
                   messageBackground: '#FEE2E2',
                   messageBorder: '#FECACA',
                 }
