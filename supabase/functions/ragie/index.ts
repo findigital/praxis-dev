@@ -31,7 +31,7 @@ serve(async (req) => {
     const requestBody = {
       ...body,
       rerank: true,
-      limit: 8
+      top_k: 8
     };
 
     console.log('Request body:', requestBody);
@@ -56,11 +56,6 @@ serve(async (req) => {
     const data = await response.json();
     console.log('Ragie API response:', data);
 
-    // Transform the response for the generate endpoint
-    if (endpoint === 'tutorial/generate' && data.generation) {
-      data.answer = data.generation;
-    }
-    
     return new Response(JSON.stringify(data), { 
       headers: { 
         ...corsHeaders,

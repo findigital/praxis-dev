@@ -12,7 +12,7 @@ interface RetrievalResponse {
 }
 
 interface GenerateResponse {
-  answer?: string;
+  answer: string;
   generation?: string;
 }
 
@@ -33,13 +33,17 @@ export const ragieService = {
         throw error;
       }
 
-      if (!data || !Array.isArray(data.scored_chunks)) {
-        console.error('Invalid response format:', data);
-        throw new Error('Invalid response format from Ragie API');
+      if (!data) {
+        console.error('No data received from Ragie API');
+        throw new Error('No data received from Ragie API');
       }
+
+      const response = {
+        scored_chunks: Array.isArray(data.scored_chunks) ? data.scored_chunks : []
+      };
       
-      console.log('Chunks retrieval successful:', data);
-      return data;
+      console.log('Chunks retrieval successful:', response);
+      return response;
     } catch (error) {
       console.error('Error retrieving chunks:', error);
       throw error;
@@ -62,14 +66,16 @@ export const ragieService = {
         throw error;
       }
 
-      const response = data as GenerateResponse;
-      if (!response || (!response.answer && !response.generation)) {
-        console.error('Invalid response format:', data);
-        throw new Error('Invalid response format from Ragie API');
+      if (!data) {
+        console.error('No data received from Ragie API');
+        throw new Error('No data received from Ragie API');
       }
+
+      const response = data as GenerateResponse;
+      const answer = response.answer || response.generation || 'No answer generated';
       
       console.log('Answer generation successful:', response);
-      return response.answer || response.generation || 'No answer generated';
+      return answer;
     } catch (error) {
       console.error('Error generating answer:', error);
       throw error;
