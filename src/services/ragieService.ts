@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-const SUPABASE_PROJECT_ID = 'zfeipxfyvimsjbsljpvc';
-const EDGE_FUNCTION_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/ragie`;
+import { supabase } from '@/integrations/supabase/client';
 
 interface ScoredChunk {
   text: string;
@@ -19,32 +16,20 @@ export const ragieService = {
     try {
       console.log('Attempting to retrieve chunks...');
       
-      const response = await axios.post(
-        `${EDGE_FUNCTION_URL}/retrievals`,
-        {
+      const { data, error } = await supabase.functions.invoke('ragie/retrievals', {
+        body: {
           query,
           filter: { scope: "tutorial" },
           rerank: true
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-          }
         }
-      );
+      });
+
+      if (error) throw error;
       
-      console.log('Chunks retrieval successful:', response.status);
-      return response.data;
+      console.log('Chunks retrieval successful');
+      return data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error retrieving chunks:', {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data
-        });
-      } else {
-        console.error('Error retrieving chunks:', error);
-      }
+      console.error('Error retrieving chunks:', error);
       throw error;
     }
   },
@@ -53,32 +38,20 @@ export const ragieService = {
     try {
       console.log('Starting answer generation process...');
       
-      const response = await axios.post(
-        `${EDGE_FUNCTION_URL}/tutorial/generate`,
-        {
+      const { data, error } = await supabase.functions.invoke('ragie/tutorial/generate', {
+        body: {
           query,
           rerank: true,
           filter: { scope: "tutorial" }
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-          }
         }
-      );
+      });
+
+      if (error) throw error;
       
-      console.log('Answer generation successful:', response.status);
-      return response.data;
+      console.log('Answer generation successful');
+      return data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error generating answer:', {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data
-        });
-      } else {
-        console.error('Error generating answer:', error);
-      }
+      console.error('Error generating answer:', error);
       throw error;
     }
   },
@@ -92,29 +65,16 @@ export const ragieService = {
     try {
       console.log('Attempting to upload document...');
       
-      const response = await axios.post(
-        `${EDGE_FUNCTION_URL}/documents`,
-        formData,
-        {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-          }
-        }
-      );
+      const { data, error } = await supabase.functions.invoke('ragie/documents', {
+        body: formData
+      });
+
+      if (error) throw error;
       
-      console.log('Document upload successful:', response.status);
-      return response.data;
+      console.log('Document upload successful');
+      return data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error uploading document:', {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data
-        });
-      } else {
-        console.error('Error uploading document:', error);
-      }
+      console.error('Error uploading document:', error);
       throw error;
     }
   }

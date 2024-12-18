@@ -15,22 +15,6 @@ serve(async (req) => {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // Verify authorization
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      console.error('Missing authorization header');
-      return new Response(
-        JSON.stringify({ error: 'Missing authorization header' }),
-        { 
-          status: 401, 
-          headers: { 
-            ...corsHeaders,
-            'Content-Type': 'application/json'
-          } 
-        }
-      );
-    }
-
     const ragieApiKey = Deno.env.get('VITE_RAGIE_API_KEY');
     if (!ragieApiKey) {
       console.error('Ragie API key not found in environment variables');
@@ -52,6 +36,7 @@ serve(async (req) => {
 
     console.log(`Forwarding request to: ${targetUrl}`);
 
+    // Forward the request to Ragie API
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: {
