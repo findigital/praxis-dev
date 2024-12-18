@@ -37,14 +37,14 @@ const Chat = () => {
       console.log('Retrieved chunks:', chunksResponse);
 
       // Then get the generated answer
-      const response = await ragieService.generateAnswer(message);
+      const answer = await ragieService.generateAnswer(message);
       
-      if (!response || !response.answer) {
+      if (!answer) {
         throw new Error('Invalid response from Ragie API');
       }
 
       setMessages(prev => [...prev, { 
-        content: response.answer, 
+        content: answer, 
         isUser: false,
         chunks: chunksResponse.scored_chunks.map(chunk => ({
           text: chunk.text,
