@@ -15,26 +15,28 @@ import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout><Index /></Layout>} />
-          <Route path="/chat" element={<Layout><Chat /></Layout>} />
-          <Route path="/cases" element={<Layout><Cases /></Layout>} />
-          <Route path="/cases/:id" element={<Layout><CaseDetail /></Layout>} />
-          <Route path="/library" element={<Layout><LawLibrary /></Layout>} />
-          <Route path="/transcripts" element={<Layout><Transcripts /></Layout>} />
-          <Route path="/team" element={<Layout><LegalTeam /></Layout>} />
-          <Route path="/settings" element={<Layout><Settings /></Layout>} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Routes>
+            <Route path="/" element={<Layout><Index /></Layout>} />
+            <Route path="/chat" element={<Layout><Chat /></Layout>} />
+            <Route path="/cases" element={<Layout><Cases /></Layout>} />
+            <Route path="/cases/:id" element={<Layout><CaseDetail /></Layout>} />
+            <Route path="/library" element={<Layout><LawLibrary /></Layout>} />
+            <Route path="/transcripts" element={<Layout><Transcripts /></Layout>} />
+            <Route path="/team" element={<Layout><LegalTeam /></Layout>} />
+            <Route path="/settings" element={<Layout><Settings /></Layout>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+}
 
 export default App;
