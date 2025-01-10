@@ -53,7 +53,7 @@ const Chat = () => {
               className={`${
                 msg.isUser 
                   ? "ml-auto bg-primary text-primary-foreground" 
-                  : "bg-muted"
+                  : "bg-muted text-white"
               } p-4 rounded-lg shadow-sm max-w-[80%]`}
             >
               <p className="text-sm">{msg.content}</p>
