@@ -72,7 +72,41 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-in": "slide-in 0.3s ease-out",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: 'white',
+            a: {
+              color: 'white',
+              '&:hover': {
+                color: 'white',
+              },
+            },
+            strong: {
+              color: 'white',
+            },
+            em: {
+              color: 'white',
+            },
+            code: {
+              color: 'white',
+            },
+            h1: {
+              color: 'white',
+            },
+            h2: {
+              color: 'white',
+            },
+            h3: {
+              color: 'white',
+            },
+            h4: {
+              color: 'white',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;

@@ -79,5 +79,5 @@
 
 /* Add styles for markdown content */
 .prose-invert {
-  @apply prose-headings:text-white prose-p:text-white prose-strong:text-white prose-em:text-white prose-code:text-white;
+  @apply prose prose-white;
 }

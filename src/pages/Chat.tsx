@@ -60,9 +60,9 @@ const Chat = () => {
               {msg.isUser ? (
                 <p className="text-sm">{msg.content}</p>
               ) : (
-                <ReactMarkdown className="text-sm prose prose-invert">
-                  {msg.content}
-                </ReactMarkdown>
+                <div className="prose prose-white text-sm">
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
               )}
             </div>
           ))}
