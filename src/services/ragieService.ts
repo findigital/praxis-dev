@@ -1,30 +1,19 @@
-const STACK_AI_URL = "https://api.stack-ai.com/inference/v0/run/876e4adb-f918-4c45-870c-dd8f937f81e1/65e8ed41c1eab4f37ce059cb";
+import { supabase } from "@/integrations/supabase/client";
 
 export const ragieService = {
   generateAnswer: async (message: string) => {
     try {
-      const response = await fetch(STACK_AI_URL, {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer b615fa22-65f3-4593-bb9a-32a0a177be4c",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          "user_id": "default-user",
-          "in-0": message
-        }),
+      const { data, error } = await supabase.functions.invoke('generate-legal-response', {
+        body: { message }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Stack AI Error:", errorData);
-        throw new Error(`API request failed with status ${response.status}`);
+      if (error) {
+        console.error("Legal Response Error:", error);
+        throw error;
       }
 
-      const data = await response.json();
-      console.log("Stack AI Response:", data);
-      
-      return data["out-0"] || "I couldn't generate a response at this time.";
+      console.log("Legal Response:", data);
+      return data.response;
     } catch (error) {
       console.error("Error generating answer:", error);
       throw error;

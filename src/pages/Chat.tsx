@@ -14,7 +14,7 @@ interface Message {
 const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([{
-    content: "Hello! I'm your AI assistant. How can I help you today?",
+    content: "Welcome! I am your Nigerian court research assistant. How may I help you with your legal inquiries today?",
     isUser: false
   }]);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ const Chat = () => {
           ))}
           {isLoading && (
             <div className="bg-muted p-4 rounded-lg shadow-sm max-w-[80%]">
-              <p className="text-sm text-muted-foreground">Thinking...</p>
+              <p className="text-sm text-white">Processing your inquiry...</p>
             </div>
           )}
         </div>
@@ -72,7 +72,7 @@ const Chat = () => {
           <Input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
+            placeholder="Ask about Nigerian court cases, laws, or procedures..."
             className="flex-1"
             onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSend()}
             disabled={isLoading}
