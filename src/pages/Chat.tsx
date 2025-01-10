@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ragieService } from "@/services/ragieService";
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   content: string;
@@ -52,11 +53,17 @@ const Chat = () => {
               key={index}
               className={`${
                 msg.isUser 
-                  ? "ml-auto bg-primary text-primary-foreground" 
+                  ? "ml-auto bg-gray-700 text-white" 
                   : "bg-muted text-white"
               } p-4 rounded-lg shadow-sm max-w-[80%]`}
             >
-              <p className="text-sm">{msg.content}</p>
+              {msg.isUser ? (
+                <p className="text-sm">{msg.content}</p>
+              ) : (
+                <ReactMarkdown className="text-sm prose prose-invert">
+                  {msg.content}
+                </ReactMarkdown>
+              )}
             </div>
           ))}
           {isLoading && (
