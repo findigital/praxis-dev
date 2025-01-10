@@ -58,7 +58,7 @@ const Chat = () => {
               } p-4 rounded-lg shadow-sm max-w-[80%]`}
             >
               {msg.isUser ? (
-                <p className="text-sm">{msg.content}</p>
+                <p className="text-sm text-right">{msg.content}</p>
               ) : (
                 <div className="markdown-content text-sm">
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
