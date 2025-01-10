@@ -78,6 +78,6 @@
 }
 
 /* Add styles for markdown content */
-.prose-invert {
-  @apply prose prose-invert;
+.markdown-content {
+  @apply prose prose-invert max-w-none;
 }
