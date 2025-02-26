@@ -1,10 +1,14 @@
+
 import { supabase } from "@/integrations/supabase/client";
 
 export const ragieService = {
   generateAnswer: async (message: string) => {
     try {
       const { data, error } = await supabase.functions.invoke('generate-legal-response', {
-        body: { message }
+        body: { message },
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (error) {

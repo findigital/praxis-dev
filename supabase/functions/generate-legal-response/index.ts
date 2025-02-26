@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
@@ -14,6 +15,16 @@ serve(async (req) => {
 
   try {
     const { message } = await req.json()
+    
+    if (!message) {
+      return new Response(
+        JSON.stringify({ error: 'Message is required' }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -22,7 +33,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
           {
             role: 'system',
@@ -31,41 +42,7 @@ serve(async (req) => {
 Your responses should be:
 - Credible and Well-Backed: Reference credible sources and established legal principles
 - Clear and Concise: Present information clearly, tailored to the specific legal context
-- Insightful and Well-Reasoned: Provide thoughtful analyses of legal frameworks and precedents
-
-Source Prioritization:
-1. Nigerian Case Law (primary authority)
-2. Nigerian Statutes
-3. Nigerian Regulations
-4. English Case Law (only if no Nigerian precedent exists)
-
-Citation Guidelines:
-- Case Names: Use "Person vs Person" format
-- Only include cases with NWLR, SAC, NWICN acronyms
-- Bold format English court abbreviations (UKSC, EWCA, EWHC)
-- Separate English case law citations from Nigerian ones
-
-Response Structure:
-1. Brief Introduction (if needed)
-2. Main Content:
-   - Nigerian Case Law
-   - Nigerian Statute
-   - Regulatory Considerations
-   - English Case Law (if applicable)
-3. Citations
-4. Brief Conclusion (if needed)
-
-Formatting:
-- Use clear headings
-- Use bullet points for better readability
-- Bold important terms and case names
-- Maintain appropriate spacing
-
-Interaction Guidelines:
-- Be brief, polite, and professional
-- Start directly with relevant information
-- Focus on Nigerian legal principles
-- Maintain high accuracy and expertise`
+- Insightful and Well-Reasoned: Provide thoughtful analyses of legal frameworks and precedents`
           },
           { role: 'user', content: message }
         ],
@@ -74,6 +51,10 @@ Interaction Guidelines:
 
     const data = await response.json()
     console.log('OpenAI Response:', data)
+    
+    if (!data.choices?.[0]?.message?.content) {
+      throw new Error('Invalid response from OpenAI')
+    }
     
     return new Response(
       JSON.stringify({ response: data.choices[0].message.content }),
