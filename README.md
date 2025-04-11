@@ -4,6 +4,24 @@
 
 **URL**: https://lovable.dev/projects/c89c436f-2361-45aa-a19a-327b7308ad19
 
+## What technologies are used for this project?
+
+This project is built with:
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+- Supabase (Auth, Database, Edge Functions)
+- OpenAI Assistant API
+
+## AI Legal Assistant
+
+This project uses the OpenAI Assistant API to power an AI legal research assistant specialized for Nigerian legal context. The assistant (ID: `asst_DoFkThnJXJ0ZEzHTNDdVzhf7`) is integrated through a Supabase Edge Function.
+
+For detailed information about the implementation, configuration, and deployment, see the [OpenAI Assistant Setup Documentation](./OPENAI_ASSISTANT_SETUP.md).
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
@@ -50,19 +68,11 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/c89c436f-2361-45aa-a19a-327b7308ad19) and click on Share -> Publish.
+
+For deploying the Supabase Edge Function for the OpenAI Assistant integration, see the [deployment instructions](./OPENAI_ASSISTANT_SETUP.md#deployment-instructions).
 
 ## I want to use a custom domain - is that possible?
 
